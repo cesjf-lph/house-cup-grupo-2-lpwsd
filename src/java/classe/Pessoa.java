@@ -12,8 +12,9 @@ package classe;
 public class Pessoa {
      private String nome;
      private String idade;
+     private int id;
    
-     public Pessoa(){}
+    public Pessoa(){}
 
     public String getNome() {
         return nome;
@@ -30,5 +31,13 @@ public class Pessoa {
     public void setIdade(String idade) {
         this.idade = idade;
     }
-     
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
 }
