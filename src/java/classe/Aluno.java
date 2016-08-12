@@ -13,6 +13,7 @@ public class Aluno extends Pessoa {
     private int pontos;
     private Grupo grupo;
     private Periodo periodo;
+    
     public Aluno(){
         
     }
