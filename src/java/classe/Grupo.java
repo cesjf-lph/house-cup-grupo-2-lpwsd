@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Grupo {
     private ArrayList<Aluno> alunos;
-    private Periodo periodo;
+   //private Periodo periodo;
     private int pontosTotais;
     public Grupo(){
         
@@ -27,13 +27,13 @@ public class Grupo {
         this.alunos = alunos;
     }
 
-    public Periodo getPeriodo() {
-        return periodo;
-    }
+    //public Periodo getPeriodo() {
+    //    return periodo;
+    //}
 
-    public void setPeriodo(Periodo periodo) {
-        this.periodo = periodo;
-    }
+    //public void setPeriodo(Periodo periodo) {
+    //    this.periodo = periodo;
+    //}
 
     public int getPontosTotais() {
         return pontosTotais;

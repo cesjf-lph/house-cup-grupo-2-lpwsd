@@ -12,7 +12,9 @@ package classe;
 public class Aluno extends Pessoa {
     private int pontos;
     private Grupo grupo;
-    private Periodo periodo;
+    //private Periodo periodo;
+    private String evento;
+    private int matricula;
     
     public Aluno(){
         
@@ -34,12 +36,20 @@ public class Aluno extends Pessoa {
         this.grupo = grupo;
     }
 
-    public Periodo getPeriodo() {
-        return periodo;
+    public String getEvento() {
+        return evento;
     }
 
-    public void setPeriodo(Periodo periodo) {
-        this.periodo = periodo;
+    public void setEvento(String evento) {
+        this.evento = evento;
+    }
+
+    public int getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(int matricula) {
+        this.matricula = matricula;
     }
     
     
