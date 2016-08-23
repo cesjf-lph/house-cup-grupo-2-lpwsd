@@ -5,13 +5,18 @@
  */
 package classe;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
+
 /**
  *
  * @author Guilherme
  */
-public class Aluno extends Pessoa {
+@Entity
+public class Aluno extends Pessoa implements Serializable {
+
     private int pontos;
-    private Grupo grupo;
+    //private Grupo grupo;
     //private Periodo periodo;
     private String evento;
     private int matricula;
@@ -20,6 +25,7 @@ public class Aluno extends Pessoa {
         
     }
 
+   
     public int getPontos() {
         return pontos;
     }
@@ -28,13 +34,13 @@ public class Aluno extends Pessoa {
         this.pontos = pontos;
     }
 
-    public Grupo getGrupo() {
+    /*public Grupo getGrupo() {
         return grupo;
     }
 
     public void setGrupo(Grupo grupo) {
         this.grupo = grupo;
-    }
+    }*/
 
     public String getEvento() {
         return evento;

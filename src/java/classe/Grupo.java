@@ -5,16 +5,27 @@
  */
 package classe;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author Guilherme
  */
-public class Grupo {
+@Entity
+public class Grupo implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @OneToMany
     private ArrayList<Aluno> alunos;
    //private Periodo periodo;
-    private int pontosTotais;
+    //private int pontosTotais;
     public Grupo(){
         
     }
@@ -26,7 +37,7 @@ public class Grupo {
     public void setAlunos(ArrayList<Aluno> alunos) {
         this.alunos = alunos;
     }
-
+    
     //public Periodo getPeriodo() {
     //    return periodo;
     //}
@@ -35,12 +46,20 @@ public class Grupo {
     //    this.periodo = periodo;
     //}
 
-    public int getPontosTotais() {
-        return pontosTotais;
+    //public int getPontosTotais() {
+    //    return pontosTotais;
+    //}
+
+   // public void setPontosTotais(int pontosTotais) {
+    //    this.pontosTotais = pontosTotais;
+   // }
+
+    public Long getId() {
+        return id;
     }
 
-    public void setPontosTotais(int pontosTotais) {
-        this.pontosTotais = pontosTotais;
+    public void setId(Long id) {
+        this.id = id;
     }
     
 }

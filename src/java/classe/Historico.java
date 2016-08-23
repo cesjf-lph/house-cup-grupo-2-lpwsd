@@ -6,6 +6,8 @@
 package classe;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,38 +18,30 @@ import javax.persistence.Id;
  * @author aluno
  */
 @Entity
-public class Pessoa implements Serializable{
+public class Historico implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-     private String nome;
-     private String idade;
-     private Long id;
-   
-    public Pessoa(){}
+    private int pontos;
+    private Date data;
+    private ArrayList<Aluno> alunos;
+    private ArrayList<Grupo> grupos;
+    private Long id;
 
-    public String getNome() {
-        return nome;
+    public int getPontos() {
+        return pontos;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setPontos(int pontos) {
+        this.pontos = pontos;
     }
 
-    public String getIdade() {
-        return idade;
+    public Date getData() {
+        return data;
     }
 
-    public void setIdade(String idade) {
-        this.idade = idade;
+    public void setData(Date data) {
+        this.data = data;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    
     
 }
