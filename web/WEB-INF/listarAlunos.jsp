@@ -14,7 +14,7 @@
     </head>
     <body>
         <h1>Lista de Alunos:</h1>
-         <a href="add">[Listar Alunos]</a>
+         <a href="cadastrarAluno.html">[Adicionar Aluno]</a>
         <c:forEach var="aluno" items="${alunos}">
             <p><label>Nome: </label><c:out value="${aluno.nome}" /></p>
             <p><label>Idade: </label><c:out value="${aluno.idade}" /></p>

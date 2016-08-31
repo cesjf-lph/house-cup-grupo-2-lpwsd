@@ -7,7 +7,7 @@
     </head>
     <body>
         <h1>Formulário</h1>
-        <form action="add" method="POST">
+        <form action="cadastrarAluno.html" method="POST">
             <div>
                 <label>Nome completo:</label>
                 <input name="nome" />

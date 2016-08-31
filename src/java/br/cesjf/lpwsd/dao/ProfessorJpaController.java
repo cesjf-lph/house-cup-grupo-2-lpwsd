@@ -71,7 +71,7 @@ public class ProfessorJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = professor.getNome();
+                Long id = professor.getId();
                 if (findProfessor(id) == null) {
                     throw new NonexistentEntityException("The professor with id " + id + " no longer exists.");
                 }
@@ -84,7 +84,7 @@ public class ProfessorJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Long id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -92,7 +92,7 @@ public class ProfessorJpaController implements Serializable {
             Professor professor;
             try {
                 professor = em.getReference(Professor.class, id);
-                professor.getNome();
+                professor.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The professor with id " + id + " no longer exists.", enfe);
             }
@@ -136,7 +136,7 @@ public class ProfessorJpaController implements Serializable {
         }
     }
 
-    public Professor findProfessor(String id) {
+    public Professor findProfessor(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Professor.class, id);

@@ -4,7 +4,6 @@
     <non-jta-data-source>jdbc/sample</non-jta-data-source>
     <class>classe.Aluno</class>
     <class>classe.Grupo</class>
-    <class>classe.Pessoa</class>
     <class>classe.Professor</class>
     <class>classe.Historico</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>

@@ -6,7 +6,7 @@
 package classe;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,13 +20,38 @@ import javax.persistence.Id;
 @Entity
 public class Historico implements Serializable{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)    
+    private Long id;
     private int pontos;
     private Date data;
-    private ArrayList<Aluno> alunos;
-    private ArrayList<Grupo> grupos;
-    private Long id;
+    private List<Aluno> alunos;
+    private List<Grupo> grupos;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
+    }
+
+    public List<Grupo> getGrupos() {
+        return grupos;
+    }
+
+    public void setGrupos(List<Grupo> grupos) {
+        this.grupos = grupos;
+    }
+
+    
     public int getPontos() {
         return pontos;
     }

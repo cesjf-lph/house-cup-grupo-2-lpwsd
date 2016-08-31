@@ -19,6 +19,7 @@ import javax.persistence.Id;
 public class Professor implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String nome;
     private String cpf;
     private int idade;
@@ -31,6 +32,14 @@ public class Professor implements Serializable {
     
     public String getNome() {
         return nome;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setNome(String nome) {

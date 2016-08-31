@@ -6,7 +6,7 @@
 package classe;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,18 +23,18 @@ public class Grupo implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @OneToMany
-    private ArrayList<Aluno> alunos;
+    private List<Aluno> alunos;
    //private Periodo periodo;
     //private int pontosTotais;
     public Grupo(){
         
     }
 
-    public ArrayList<Aluno> getAlunos() {
+    public List<Aluno> getAlunos() {
         return alunos;
     }
 
-    public void setAlunos(ArrayList<Aluno> alunos) {
+    public void setAlunos(List<Aluno> alunos) {
         this.alunos = alunos;
     }
     

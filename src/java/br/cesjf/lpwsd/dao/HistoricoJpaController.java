@@ -71,7 +71,7 @@ public class HistoricoJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                int id = historico.getPontos();
+                Long id = historico.getId();
                 if (findHistorico(id) == null) {
                     throw new NonexistentEntityException("The historico with id " + id + " no longer exists.");
                 }
@@ -84,7 +84,7 @@ public class HistoricoJpaController implements Serializable {
         }
     }
 
-    public void destroy(int id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Long id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -92,7 +92,7 @@ public class HistoricoJpaController implements Serializable {
             Historico historico;
             try {
                 historico = em.getReference(Historico.class, id);
-                historico.getPontos();
+                historico.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The historico with id " + id + " no longer exists.", enfe);
             }
@@ -136,7 +136,7 @@ public class HistoricoJpaController implements Serializable {
         }
     }
 
-    public Historico findHistorico(int id) {
+    public Historico findHistorico(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Historico.class, id);

@@ -71,7 +71,7 @@ public class AlunoJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = aluno.getNome();
+                Long id = aluno.getId();
                 if (findAluno(id) == null) {
                     throw new NonexistentEntityException("The aluno with id " + id + " no longer exists.");
                 }
@@ -84,7 +84,7 @@ public class AlunoJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Long id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -92,7 +92,7 @@ public class AlunoJpaController implements Serializable {
             Aluno aluno;
             try {
                 aluno = em.getReference(Aluno.class, id);
-                aluno.getNome();
+                aluno.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The aluno with id " + id + " no longer exists.", enfe);
             }
@@ -136,7 +136,7 @@ public class AlunoJpaController implements Serializable {
         }
     }
 
-    public Aluno findAluno(String id) {
+    public Aluno findAluno(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Aluno.class, id);
