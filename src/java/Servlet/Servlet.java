@@ -44,6 +44,9 @@ public class Servlet extends HttpServlet {
             ProfessorJpaController daoProf = new ProfessorJpaController(ut, emf);
             List<Professor> profs = daoProf.findProfessorEntities();
             request.setAttribute("profs", profs);
+            AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
+            List<Aluno> alus = daoAluno.findAlunoEntities();
+            request.setAttribute("alus", alus);
             request.getRequestDispatcher("/WEB-INF/pontuarAluno.jsp").forward(request, response);
         } else if (request.getRequestURI().contains("remover.html")) {
             request.setAttribute("id", request.getParameter("id"));

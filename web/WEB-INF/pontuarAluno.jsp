@@ -25,7 +25,9 @@
             </div>
             <div>
                 <label>Escolha o aluno:<select name="aluno">
-                        <option value="1">Ciclano</option>
+                        <c:forEach var="a" items="${alus}">
+                            <option value="${a.id}">${a.nome}</option>
+                        </c:forEach>
                     </select>
                 </label>
             </div>
