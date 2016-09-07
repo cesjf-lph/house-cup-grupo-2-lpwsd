@@ -1,8 +1,10 @@
 package Servlet;
 
 import br.cesjf.lpwsd.dao.AlunoJpaController;
+import br.cesjf.lpwsd.dao.ProfessorJpaController;
 import br.cesjf.lpwsd.dao.exceptions.RollbackFailureException;
 import classe.Aluno;
+import classe.Professor;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +41,9 @@ public class Servlet extends HttpServlet {
         } else if (uri.contains("listarAlunos.html")) {
             listAll(request, response);
         } else if (request.getRequestURI().contains("pontuar.html")) {
-            request.setAttribute("id", request.getParameter("id"));
+            ProfessorJpaController daoProf = new ProfessorJpaController(ut, emf);
+            List<Professor> profs = daoProf.findProfessorEntities();
+            request.setAttribute("profs", profs);
             request.getRequestDispatcher("/WEB-INF/pontuarAluno.jsp").forward(request, response);
         } else if (request.getRequestURI().contains("remover.html")) {
             request.setAttribute("id", request.getParameter("id"));

@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%-- 
     Document   : pontuarAluno
     Created on : 06/09/2016, 21:03:43
@@ -15,14 +16,28 @@
         <h1>Pontuar</h1>
         <form method="post">
             <div>
-                <label>Insira o número de pontos:
-                    <input type="text" name="pontos" />
+                <label>Escolha o professor:<select name="professor">
+                        <c:forEach var="p" items="${profs}">
+                            <option value="${p.id}">${p.nome}</option>
+                        </c:forEach>
+                    </select>
                 </label>
             </div>
             <div>
-
-                <input type="hidden" name="a_id" value="${id}"/>
-
+                <label>Escolha o aluno:<select name="aluno">
+                        <option value="1">Ciclano</option>
+                    </select>
+                </label>
+            </div>
+            <div>
+                <label>Insira o número de pontos:
+                    <input type="number" name="pontos" value="10" />
+                </label>
+            </div>
+            <div>
+                <label>Descrição:
+                    <textarea name="descricao"></textarea>
+                </label>
             </div>
             <div>
                 <input type="submit" />                              
