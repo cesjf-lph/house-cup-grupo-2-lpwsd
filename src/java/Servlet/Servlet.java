@@ -1,9 +1,11 @@
 package Servlet;
 
 import br.cesjf.lpwsd.dao.AlunoJpaController;
+import br.cesjf.lpwsd.dao.HistoricoJpaController;
 import br.cesjf.lpwsd.dao.ProfessorJpaController;
 import br.cesjf.lpwsd.dao.exceptions.RollbackFailureException;
 import classe.Aluno;
+import classe.Historico;
 import classe.Professor;
 import java.io.IOException;
 import java.util.Date;
@@ -92,6 +94,18 @@ public class Servlet extends HttpServlet {
             } catch (Exception ex) {
                 Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
             }*/
+            String professor = request.getParameter("professor");
+            String aluno = request.getParameter("aluno");
+            Integer pontos = Integer.parseInt(request.getParameter("pontos"));
+            String descricao = request.getParameter("descricao");
+            AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
+            
+            Historico h = new Historico();
+            //h.setAluno(aluno);
+            //h.setProfessor(professor);
+            h.setPontos(pontos);
+            h.setDescricao(descricao);
+            HistoricoJpaController daoHist = new HistoricoJpaController(ut, emf);
             response.sendRedirect("listarAlunos.html");
         } else if (request.getRequestURI().contains("remover.html")) {
             /*AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
