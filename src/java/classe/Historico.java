@@ -24,8 +24,9 @@ public class Historico implements Serializable{
     private Long id;
     private int pontos;
     private Date data;
-    private List<Aluno> alunos;
-    private List<Grupo> grupos;
+    private Aluno aluno;
+    private Professor professor;
+    private String descricao;
 
     public Long getId() {
         return id;
@@ -35,20 +36,28 @@ public class Historico implements Serializable{
         this.id = id;
     }
 
-    public List<Aluno> getAlunos() {
-        return alunos;
+    public Aluno getAluno() {
+        return aluno;
     }
 
-    public void setAlunos(List<Aluno> alunos) {
-        this.alunos = alunos;
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
     }
 
-    public List<Grupo> getGrupos() {
-        return grupos;
+    public Professor getProfessor() {
+        return professor;
     }
 
-    public void setGrupos(List<Grupo> grupos) {
-        this.grupos = grupos;
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     

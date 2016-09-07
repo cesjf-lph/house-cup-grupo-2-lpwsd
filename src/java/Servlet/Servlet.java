@@ -1,6 +1,7 @@
 package Servlet;
 
 import br.cesjf.lpwsd.dao.AlunoJpaController;
+import br.cesjf.lpwsd.dao.exceptions.RollbackFailureException;
 import classe.Aluno;
 import java.io.IOException;
 import java.util.Date;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 
-@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/cadastrarAluno.html", "/listarAlunos.html"})
+@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/cadastrarAluno.html", "/listarAlunos.html", "/pontuar.html", "/remover.html"})
 public class Servlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "PDWSDExercicio1PU")
@@ -35,8 +36,14 @@ public class Servlet extends HttpServlet {
 
         if (uri.contains("cadastrarAluno.html")) {
             request.getRequestDispatcher("/WEB-INF/addAluno.jsp").forward(request, response);
-        }else if (uri.contains("listarAlunos.html")){
+        } else if (uri.contains("listarAlunos.html")) {
             listAll(request, response);
+        } else if (request.getRequestURI().contains("pontuar.html")) {
+            request.setAttribute("id", request.getParameter("id"));
+            request.getRequestDispatcher("/WEB-INF/pontuarAluno.jsp").forward(request, response);
+        } else if (request.getRequestURI().contains("remover.html")) {
+            request.setAttribute("id", request.getParameter("id"));
+            request.getRequestDispatcher("/WEB-INF/pontuarAluno.jsp").forward(request, response);
         }
 
     }
@@ -54,18 +61,44 @@ public class Servlet extends HttpServlet {
             Aluno a = new Aluno();
             a.setNome(nome);
             a.setMatricula(matricula);
-            a.setIdade(idade);
+            //a.setIdade(idade);
 
             AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
             try {
-                System.out.println("persistindo " + a);
+                //System.out.println("persistindo " + a);
                 daoAluno.create(a);
-                System.out.println("persistido " + a);
+                //System.out.println("persistido " + a);
                 List<Aluno> alunos = daoAluno.findAlunoEntities();
-                System.out.println(alunos);
+                //System.out.println(alunos);
             } catch (Exception ex) {
                 Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+            response.sendRedirect("listarAlunos.html");
+        } else if (request.getRequestURI().contains("pontuar.html")) {
+            /*AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
+            Aluno alunoE = daoAluno.findAluno(Long.parseLong(request.getParameter("id")));
+            alunoE.setPontos(alunoE.getPontos() + Integer.parseInt(request.getParameter("pontos")));
+            try {
+                daoAluno.edit(alunoE);
+            } catch (RollbackFailureException ex) {
+                Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+            }*/
+            response.sendRedirect("listarAlunos.html");
+        } else if (request.getRequestURI().contains("remover.html")) {
+            /*AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
+            Aluno alunoE = daoAluno.findAluno(Long.parseLong(request.getParameter("id")));
+            if (alunoE.getPontos() > 0) {
+                alunoE.setPontos(alunoE.getPontos() - Integer.parseInt(request.getParameter("pontos")));
+                try {
+                    daoAluno.edit(alunoE);
+                } catch (RollbackFailureException ex) {
+                    Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }*/
             response.sendRedirect("listarAlunos.html");
         }
     }

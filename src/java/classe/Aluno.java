@@ -24,11 +24,7 @@ public class Aluno implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
-    private String idade;
-    private int pontos;
     //private Grupo grupo;
-    //private Periodo periodo;
-    private String evento;
     private int matricula;
 
     public Aluno() {
@@ -51,21 +47,7 @@ public class Aluno implements Serializable {
         this.nome = nome;
     }
 
-    public String getIdade() {
-        return idade;
-    }
-
-    public void setIdade(String idade) {
-        this.idade = idade;
-    }
-
-    public int getPontos() {
-        return pontos;
-    }
-
-    public void setPontos(int pontos) {
-        this.pontos = pontos;
-    }
+    
 
     /*public Grupo getGrupo() {
         return grupo;
@@ -74,14 +56,7 @@ public class Aluno implements Serializable {
     public void setGrupo(Grupo grupo) {
         this.grupo = grupo;
     }*/
-    public String getEvento() {
-        return evento;
-    }
-
-    public void setEvento(String evento) {
-        this.evento = evento;
-    }
-
+    
     public int getMatricula() {
         return matricula;
     }
@@ -92,7 +67,8 @@ public class Aluno implements Serializable {
 
     @Override
     public String toString() {
-        return "Aluno{" + "id=" + id + ", nome=" + nome + ", idade=" + idade + ", pontos=" + pontos + ", evento=" + evento + ", matricula=" + matricula + '}';
+        return "Aluno{" + "id=" + id + ", nome=" + nome + ", matricula=" + matricula + '}';
     }
+
 
 }

@@ -20,6 +20,8 @@
             <p><label>Idade: </label><c:out value="${aluno.idade}" /></p>
             <p><label>Pontos: </label><c:out value="${aluno.pontos}" /></p>
             <p><label>Matrícula: </label><c:out value="${aluno.matricula}" /></p>
+            <p><a href="pontuar.html?id=${aluno.id}">Pontuar</a></p>
+            <p><a href="remover.html?id=${aluno.id}">Remover pontos</a></p>
             <hr />
         </c:forEach>
     </body>
