@@ -95,13 +95,13 @@ public class Servlet extends HttpServlet {
                 Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
             }*/
             String professor = request.getParameter("professor");
-            String aluno = request.getParameter("aluno");
+            Long idAluno = Long.parseLong(request.getParameter("aluno"));
             Integer pontos = Integer.parseInt(request.getParameter("pontos"));
             String descricao = request.getParameter("descricao");
             AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
             
             Historico h = new Historico();
-            //h.setAluno(aluno);
+            h.setAluno(daoAluno.findAluno(idAluno));
             //h.setProfessor(professor);
             h.setPontos(pontos);
             h.setDescricao(descricao);
