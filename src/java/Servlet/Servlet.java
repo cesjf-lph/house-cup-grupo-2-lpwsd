@@ -62,10 +62,10 @@ public class Servlet extends HttpServlet {
             throws ServletException, IOException {
         if (request.getRequestURI().contains("cadastrarAluno.html")) {
             String nome = request.getParameter("nome");
-            String idade = request.getParameter("idade");
+            //String idade = request.getParameter("idade");
             //Boolean sexo = Boolean.parseBoolean(request.getParameter("sexo"));
             Integer matricula = Integer.parseInt(request.getParameter("matricula"));
-            Date inscricao = new Date();
+            //Date inscricao = new Date();
 
             Aluno a = new Aluno();
             a.setNome(nome);
@@ -96,16 +96,23 @@ public class Servlet extends HttpServlet {
             }*/
             String professor = request.getParameter("professor");
             Long idAluno = Long.parseLong(request.getParameter("aluno"));
+            Long idProfessor = Long.parseLong(request.getParameter("professor"));
             Integer pontos = Integer.parseInt(request.getParameter("pontos"));
             String descricao = request.getParameter("descricao");
             AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
+            ProfessorJpaController daoProfessor = new ProfessorJpaController(ut, emf);
             
             Historico h = new Historico();
             h.setAluno(daoAluno.findAluno(idAluno));
-            //h.setProfessor(professor);
+            h.setProfessor(daoProfessor.findProfessor(idProfessor));
             h.setPontos(pontos);
             h.setDescricao(descricao);
             HistoricoJpaController daoHist = new HistoricoJpaController(ut, emf);
+            try {
+                daoHist.create(h);
+            } catch (Exception ex) {
+                Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
             response.sendRedirect("listarAlunos.html");
         } else if (request.getRequestURI().contains("remover.html")) {
             /*AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);

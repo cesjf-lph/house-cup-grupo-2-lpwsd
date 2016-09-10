@@ -13,10 +13,6 @@
                 <input name="nome" />
             </div>
             <div>
-                <label>Idade:</label>
-                <input name="idade" />
-            </div>
-            <div>
                 <label>Matrícula:</label>
                 <input name="matricula" />
             </div>
