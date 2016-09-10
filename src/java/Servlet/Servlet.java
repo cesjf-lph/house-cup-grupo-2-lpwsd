@@ -3,20 +3,16 @@ package Servlet;
 import br.cesjf.lpwsd.dao.AlunoJpaController;
 import br.cesjf.lpwsd.dao.HistoricoJpaController;
 import br.cesjf.lpwsd.dao.ProfessorJpaController;
-import br.cesjf.lpwsd.dao.exceptions.RollbackFailureException;
 import classe.Aluno;
 import classe.Historico;
 import classe.Professor;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 
-@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/cadastrarAluno.html", "/listarAlunos.html", "/pontuar.html", "/remover.html"})
+@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/cadastrarAluno.html", "/listarAlunos.html", "/pontuar.html", "/remover.html", "/cadastrarProfessor.html", "/listarProfessores.html"})
 public class Servlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "PDWSDExercicio1PU")
@@ -42,6 +38,10 @@ public class Servlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/addAluno.jsp").forward(request, response);
         } else if (uri.contains("listarAlunos.html")) {
             listAll(request, response);
+        } else if (uri.contains("listarProfessores.html")) {
+            listAllP(request, response);
+        } else if (uri.contains("cadastrarProfessor.html")) {
+            request.getRequestDispatcher("/WEB-INF/addProfessor.jsp").forward(request, response);
         } else if (request.getRequestURI().contains("pontuar.html")) {
             ProfessorJpaController daoProf = new ProfessorJpaController(ut, emf);
             List<Professor> profs = daoProf.findProfessorEntities();
@@ -129,6 +129,24 @@ public class Servlet extends HttpServlet {
             }*/
             response.sendRedirect("listarAlunos.html");
         }
+        else if (request.getRequestURI().contains("cadastrarProfessor.html")){
+            String nome = request.getParameter("nome");
+            
+            Professor p = new Professor();
+            //a.setIdade(idade);
+            p.setNome(nome);
+            ProfessorJpaController daoProf = new ProfessorJpaController(ut, emf);
+            try {
+                //System.out.println("persistindo " + a);
+                daoProf.create(p);
+                //System.out.println("persistido " + a);
+                //List<Aluno> alunos = daoAluno.findAlunoEntities();
+                //System.out.println(alunos);
+            } catch (Exception ex) {
+                Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            response.sendRedirect("listarProfessores.html");
+        }
     }
 
     private void listAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -137,6 +155,14 @@ public class Servlet extends HttpServlet {
         System.out.println(alunos);
         request.setAttribute("alunos", alunos);
         request.getRequestDispatcher("/WEB-INF/listarAlunos.jsp").forward(request, response);
+    }
+    
+    private void listAllP(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+       ProfessorJpaController daoProf = new ProfessorJpaController(ut, emf);
+       List<Professor> professores = daoProf.findProfessorEntities();
+       System.out.println(professores);
+       request.setAttribute("professores", professores);
+       request.getRequestDispatcher("/WEB-INF/listarProfessores.jsp").forward(request, response);
     }
 
     @Override
