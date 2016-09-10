@@ -19,6 +19,7 @@
             <p><label>Data: </label><c:out value="${historico.data}" /></p>
             <p><label>Aluno: </label><c:out value="${historico.aluno.nome}" /></p>
             <p><label>Professor: </label><c:out value="${historico.professor.nome}" /></p>
+            <p><label>Pontos: </label><c:out value="${historico.pontos}" /></p>
             <p><label>Descrição: </label><c:out value="${historico.descricao}" /></p>
             <hr />
         </c:forEach>

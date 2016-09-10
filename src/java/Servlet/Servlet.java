@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 
-@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/cadastrarAluno.html", "/listarAlunos.html", "/pontuar.html", "/remover.html", "/cadastrarProfessor.html", "/listarProfessores.html", "/listarHists.html"})
+@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/cadastrarAluno.html", "/listarAlunos.html", "/pontuar.html", "/remover.html", "/cadastrarProfessor.html", "/listarProfessores.html", "/listarHistoricos.html"})
 public class Servlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "PDWSDExercicio1PU")
@@ -41,6 +41,8 @@ public class Servlet extends HttpServlet {
             listAll(request, response);
         } else if (uri.contains("listarProfessores.html")) {
             listAllP(request, response);
+        } else if (uri.contains("listarHistoricos.html")) {
+            listAllH(request, response);
         } else if (uri.contains("cadastrarProfessor.html")) {
             request.getRequestDispatcher("/WEB-INF/addProfessor.jsp").forward(request, response);
         } else if (request.getRequestURI().contains("pontuar.html")) {
@@ -115,7 +117,7 @@ public class Servlet extends HttpServlet {
             } catch (Exception ex) {
                 Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            response.sendRedirect("listarAlunos.html");
+            response.sendRedirect("listarHistoricos.html");
         } else if (request.getRequestURI().contains("remover.html")) {
             /*AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
             Aluno alunoE = daoAluno.findAluno(Long.parseLong(request.getParameter("id")));
@@ -165,6 +167,13 @@ public class Servlet extends HttpServlet {
        System.out.println(professores);
        request.setAttribute("professores", professores);
        request.getRequestDispatcher("/WEB-INF/listarProfessores.jsp").forward(request, response);
+    }
+    private void listAllH(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+       HistoricoJpaController daoHist = new HistoricoJpaController(ut, emf);
+       List<Historico> historicos = daoHist.findHistoricoEntities();
+       System.out.println(historicos);
+       request.setAttribute("historicos", historicos);
+       request.getRequestDispatcher("/WEB-INF/listarHistoricos.jsp").forward(request, response);
     }
 
     @Override
