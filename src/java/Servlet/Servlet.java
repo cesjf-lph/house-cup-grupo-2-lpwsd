@@ -7,6 +7,7 @@ import classe.Aluno;
 import classe.Historico;
 import classe.Professor;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 
-@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/cadastrarAluno.html", "/listarAlunos.html", "/pontuar.html", "/remover.html", "/cadastrarProfessor.html", "/listarProfessores.html"})
+@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/cadastrarAluno.html", "/listarAlunos.html", "/pontuar.html", "/remover.html", "/cadastrarProfessor.html", "/listarProfessores.html", "/listarHists.html"})
 public class Servlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "PDWSDExercicio1PU")
@@ -94,19 +95,20 @@ public class Servlet extends HttpServlet {
             } catch (Exception ex) {
                 Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
             }*/
-            String professor = request.getParameter("professor");
+            //String professor = request.getParameter("professor");
             Long idAluno = Long.parseLong(request.getParameter("aluno"));
             Long idProfessor = Long.parseLong(request.getParameter("professor"));
             Integer pontos = Integer.parseInt(request.getParameter("pontos"));
             String descricao = request.getParameter("descricao");
             AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
             ProfessorJpaController daoProfessor = new ProfessorJpaController(ut, emf);
-            
+            Date data = new Date();
             Historico h = new Historico();
             h.setAluno(daoAluno.findAluno(idAluno));
             h.setProfessor(daoProfessor.findProfessor(idProfessor));
             h.setPontos(pontos);
             h.setDescricao(descricao);
+            h.setData(data);
             HistoricoJpaController daoHist = new HistoricoJpaController(ut, emf);
             try {
                 daoHist.create(h);
