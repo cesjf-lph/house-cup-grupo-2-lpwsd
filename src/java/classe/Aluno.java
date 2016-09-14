@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -24,13 +25,14 @@ public class Aluno implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
-    //private Grupo grupo;
+    @ManyToOne
+    private Grupo grupo;
     private int matricula;
 
     public Aluno() {
 
     }
-
+    
     public Long getId() {
         return id;
     }
@@ -49,13 +51,13 @@ public class Aluno implements Serializable {
 
     
 
-    /*public Grupo getGrupo() {
+    public Grupo getGrupo() {
         return grupo;
     }
 
     public void setGrupo(Grupo grupo) {
         this.grupo = grupo;
-    }*/
+    }
     
     public int getMatricula() {
         return matricula;

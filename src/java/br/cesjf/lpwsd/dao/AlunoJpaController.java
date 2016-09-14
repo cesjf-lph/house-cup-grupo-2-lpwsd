@@ -9,13 +9,14 @@ import br.cesjf.lpwsd.dao.exceptions.NonexistentEntityException;
 import br.cesjf.lpwsd.dao.exceptions.RollbackFailureException;
 import classe.Aluno;
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import classe.Grupo;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
 
 /**
@@ -40,7 +41,16 @@ public class AlunoJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
+            Grupo grupo = aluno.getGrupo();
+            if (grupo != null) {
+                grupo = em.getReference(grupo.getClass(), grupo.getId());
+                aluno.setGrupo(grupo);
+            }
             em.persist(aluno);
+            if (grupo != null) {
+                grupo.getAlunos().add(aluno);
+                grupo = em.merge(grupo);
+            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -61,7 +71,22 @@ public class AlunoJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
+            Aluno persistentAluno = em.find(Aluno.class, aluno.getId());
+            Grupo grupoOld = persistentAluno.getGrupo();
+            Grupo grupoNew = aluno.getGrupo();
+            if (grupoNew != null) {
+                grupoNew = em.getReference(grupoNew.getClass(), grupoNew.getId());
+                aluno.setGrupo(grupoNew);
+            }
             aluno = em.merge(aluno);
+            if (grupoOld != null && !grupoOld.equals(grupoNew)) {
+                grupoOld.getAlunos().remove(aluno);
+                grupoOld = em.merge(grupoOld);
+            }
+            if (grupoNew != null && !grupoNew.equals(grupoOld)) {
+                grupoNew.getAlunos().add(aluno);
+                grupoNew = em.merge(grupoNew);
+            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -95,6 +120,11 @@ public class AlunoJpaController implements Serializable {
                 aluno.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The aluno with id " + id + " no longer exists.", enfe);
+            }
+            Grupo grupo = aluno.getGrupo();
+            if (grupo != null) {
+                grupo.getAlunos().remove(aluno);
+                grupo = em.merge(grupo);
             }
             em.remove(aluno);
             utx.commit();

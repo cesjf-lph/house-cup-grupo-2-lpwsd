@@ -22,14 +22,23 @@ public class Grupo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany
+    @OneToMany(mappedBy = "grupo")
     private List<Aluno> alunos;
+    private int numero;
    //private Periodo periodo;
     //private int pontosTotais;
     public Grupo(){
         
     }
 
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+    
     public List<Aluno> getAlunos() {
         return alunos;
     }

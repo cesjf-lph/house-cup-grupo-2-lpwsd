@@ -1,9 +1,11 @@
 package Servlet;
 
 import br.cesjf.lpwsd.dao.AlunoJpaController;
+import br.cesjf.lpwsd.dao.GrupoJpaController;
 import br.cesjf.lpwsd.dao.HistoricoJpaController;
 import br.cesjf.lpwsd.dao.ProfessorJpaController;
 import classe.Aluno;
+import classe.Grupo;
 import classe.Historico;
 import classe.Professor;
 import java.io.IOException;
@@ -36,6 +38,40 @@ public class Servlet extends HttpServlet {
         //String _senha = request.getParameter("senha");
 
         if (uri.contains("cadastrarAluno.html")) {
+            GrupoJpaController daoGrupo = new GrupoJpaController(ut, emf);
+            if(daoGrupo.findGrupoEntities().isEmpty()){
+                Grupo g1 = new Grupo();
+                g1.setNumero(1);
+                try {
+                    daoGrupo.create(g1);
+                } catch (Exception ex) {
+                    Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Grupo g2 = new Grupo();
+                g2.setNumero(2);
+                try {
+                    daoGrupo.create(g2);
+                } catch (Exception ex) {
+                    Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Grupo g3 = new Grupo();
+                g3.setNumero(3);
+                try {
+                    daoGrupo.create(g3);
+                } catch (Exception ex) {
+                    Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Grupo g4 = new Grupo();
+                g4.setNumero(4);
+                try {
+                    daoGrupo.create(g4);
+                } catch (Exception ex) {
+                    Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+            List<Grupo> grupos = daoGrupo.findGrupoEntities();
+            request.setAttribute("grupos", grupos);
             request.getRequestDispatcher("/WEB-INF/addAluno.jsp").forward(request, response);
         } else if (uri.contains("listarAlunos.html")) {
             listAll(request, response);
@@ -69,12 +105,17 @@ public class Servlet extends HttpServlet {
             //Boolean sexo = Boolean.parseBoolean(request.getParameter("sexo"));
             Integer matricula = Integer.parseInt(request.getParameter("matricula"));
             //Date inscricao = new Date();
+            //Integer grupo = Integer.parseInt(request.getParameter("grupo"));
 
             Aluno a = new Aluno();
             a.setNome(nome);
             a.setMatricula(matricula);
+            GrupoJpaController daoGrupo = new GrupoJpaController(ut, emf);
+            a.setGrupo(daoGrupo.findGrupo(Long.parseLong(request.getParameter("grupo"))));
+            
+            //a.setGrupo();
             //a.setIdade(idade);
-
+            
             AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
             try {
                 //System.out.println("persistindo " + a);
