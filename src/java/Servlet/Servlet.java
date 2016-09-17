@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 
-@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/cadastrarAluno.html", "/listarAlunos.html", "/pontuar.html", "/remover.html", "/cadastrarProfessor.html", "/listarProfessores.html", "/listarHistoricos.html", "/pesquisar"})
+@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/cadastrarAluno.html", "/listarAlunos.html", "/pontuar.html", "/remover.html", "/cadastrarProfessor.html", "/listarProfessores.html", "/listarHistoricos.html", "/pesquisar", "/listarTotal.html"})
 public class Servlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "PDWSDExercicio1PU")
@@ -93,6 +93,9 @@ public class Servlet extends HttpServlet {
             request.setAttribute("id", request.getParameter("id"));
             request.getRequestDispatcher("/WEB-INF/pontuarAluno.jsp").forward(request, response);
         }
+        else if (uri.contains("listarTotal.html")) {
+            request.getRequestDispatcher("/WEB-INF/addProfessor.jsp").forward(request, response);
+        }
 
     }
 
@@ -158,6 +161,11 @@ public class Servlet extends HttpServlet {
             } catch (Exception ex) {
                 Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+            /*List<Object[]> ol = daoHist.getHistoricoCount2();
+            for (Object[] linha : ol) {
+                System.out.println(((Grupo)linha[0]).getNumero()+" "+linha[1]);
+                
+            }*/
             response.sendRedirect("listarHistoricos.html");
         } else if (request.getRequestURI().contains("remover.html")) {
             /*AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
@@ -191,6 +199,39 @@ public class Servlet extends HttpServlet {
                 Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             response.sendRedirect("listarProfessores.html");
+        }
+        else if (request.getRequestURI().contains("pesquisar.html")){
+            String periodo = request.getParameter("pesquisa");
+            HistoricoJpaController daoHist = new HistoricoJpaController(ut, emf);
+            List<Historico> historicos = daoHist.findHistoricoEntities();
+            GrupoJpaController daoGrupo = new GrupoJpaController(ut, emf);
+            List<Grupo> grupos = daoGrupo.findGrupoEntities();
+            AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
+            List<Aluno> alunos = daoAluno.findAlunoEntities();
+            //Query q = em.createQuery("SELECT COUNT FROM HISTORICO");
+            
+            /*
+            int totalG1=0;
+            int totalG2=0;
+            int totalG3=0;
+            int totalG4=0;
+            for(int i = 0; i<historicos.size(); i++){
+                if(historicos.get(i).getAluno().getGrupo().getNumero() == 1){
+                    totalG1+=historicos.get(i).getPontos();
+                }
+                else if(historicos.get(i).getAluno().getGrupo().getNumero() == 2){
+                    totalG2+=historicos.get(i).getPontos();
+                }
+                else if(historicos.get(i).getAluno().getGrupo().getNumero() == 3){
+                    totalG3+=historicos.get(i).getPontos();
+                }
+                else if(historicos.get(i).getAluno().getGrupo().getNumero() == 4){
+                    totalG4+=historicos.get(i).getPontos();
+                }
+            }*/
+            
+            System.out.println("Teste: "+daoHist.getHistoricoCount2());
+            
         }
     }
 
