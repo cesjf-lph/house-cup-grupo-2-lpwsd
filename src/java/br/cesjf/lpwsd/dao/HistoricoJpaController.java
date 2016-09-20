@@ -157,7 +157,7 @@ public class HistoricoJpaController implements Serializable {
             em.close();
         }
     }
-    
+
     public List<Object[]> getHistoricoCount2() {
         EntityManager em = getEntityManager();
         try {
@@ -167,5 +167,15 @@ public class HistoricoJpaController implements Serializable {
             em.close();
         }
     }
-    
+
+    public List<Object[]> getHistoricoCount3() {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("SELECT h.aluno.grupo, SUM(h.pontos) FROM Historico AS h GROUP BY h.aluno.grupo");
+            return ((List<Object[]>) q.getResultList());
+        } finally {
+            em.close();
+        }
+    }
+
 }

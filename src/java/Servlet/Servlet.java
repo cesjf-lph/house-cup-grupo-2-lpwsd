@@ -94,7 +94,14 @@ public class Servlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/pontuarAluno.jsp").forward(request, response);
         }
         else if (uri.contains("listarTotal.html")) {
-            request.getRequestDispatcher("/WEB-INF/addProfessor.jsp").forward(request, response);
+            HistoricoJpaController daoHist = new HistoricoJpaController(ut, emf);
+            List<Object[]> ol = daoHist.getHistoricoCount2();
+            /*for (Object[] linha : ol) {
+                System.out.println(((Grupo)linha[0]).getNumero()+" "+linha[1]);
+                
+            }*/
+            request.setAttribute("grupo", ol);
+            request.getRequestDispatcher("/WEB-INF/listarPontos.jsp").forward(request, response);
         }
 
     }
@@ -201,13 +208,13 @@ public class Servlet extends HttpServlet {
             response.sendRedirect("listarProfessores.html");
         }
         else if (request.getRequestURI().contains("pesquisar.html")){
-            String periodo = request.getParameter("pesquisa");
+            /*String periodo = request.getParameter("pesquisa");
             HistoricoJpaController daoHist = new HistoricoJpaController(ut, emf);
             List<Historico> historicos = daoHist.findHistoricoEntities();
             GrupoJpaController daoGrupo = new GrupoJpaController(ut, emf);
             List<Grupo> grupos = daoGrupo.findGrupoEntities();
             AlunoJpaController daoAluno = new AlunoJpaController(ut, emf);
-            List<Aluno> alunos = daoAluno.findAlunoEntities();
+            List<Aluno> alunos = daoAluno.findAlunoEntities();*/
             //Query q = em.createQuery("SELECT COUNT FROM HISTORICO");
             
             /*
@@ -230,7 +237,7 @@ public class Servlet extends HttpServlet {
                 }
             }*/
             
-            System.out.println("Teste: "+daoHist.getHistoricoCount2());
+            //System.out.println("Teste: "+daoHist.getHistoricoCount2());
             
         }
     }
