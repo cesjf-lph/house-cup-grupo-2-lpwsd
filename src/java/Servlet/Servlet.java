@@ -9,6 +9,7 @@ import classe.Grupo;
 import classe.Historico;
 import classe.Professor;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 
-@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/cadastrarAluno.html", "/listarAlunos.html", "/pontuar.html", "/remover.html", "/cadastrarProfessor.html", "/listarProfessores.html", "/listarHistoricos.html", "/pesquisar.html", "/listarTotal.html"})
+@WebServlet(name = "Servlet", urlPatterns = {"/Servlet", "/cadastrarAluno.html", "/listarAlunos.html", "/pontuar.html", "/remover.html", "/cadastrarProfessor.html", "/listarProfessores.html", "/listarHistoricos.html", "/pesquisar.html", "/listarTotal.html", "/listarPorPeriodo.html"})
 public class Servlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "PDWSDExercicio1PU")
@@ -209,8 +210,25 @@ public class Servlet extends HttpServlet {
         } else if (request.getRequestURI().contains("pesquisar.html")) {
             String periodo = request.getParameter("pesquisa");
             HistoricoJpaController daoHist = new HistoricoJpaController(ut, emf);
-            Calendar c = Calendar.getInstance();
+            List<Calendar> datas = new ArrayList();
+            Integer anoatual = Calendar.getInstance().get(Calendar.YEAR);
+            for (int i = 2014; i <=anoatual ; i++) {
+                Calendar primeiroSemestre = Calendar.getInstance();
+                primeiroSemestre.clear();
+                primeiroSemestre.set(i, Calendar.JANUARY, 1);
+                datas.add(primeiroSemestre);
+                Calendar segundoSemestre = Calendar.getInstance();
+                segundoSemestre.set(i, Calendar.JULY, 1,0,0,0);
+                //segundoSemestre.set(Calendar.MONTH, 6);
+                datas.add(segundoSemestre);
+            }
+            for (Calendar data : datas) {
+                System.out.println(data.getTime());
+                
+            }
             
+            
+            response.sendRedirect("listarPorPeriodo.html");
             //List<Object[]> ol = daoHist.getHistoricoCount3();
         }
     }
