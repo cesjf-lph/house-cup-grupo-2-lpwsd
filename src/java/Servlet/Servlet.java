@@ -208,10 +208,11 @@ public class Servlet extends HttpServlet {
             }
             response.sendRedirect("listarProfessores.html");
         } else if (request.getRequestURI().contains("pesquisar.html")) {
-            String periodo = request.getParameter("pesquisa");
+            Integer periodo = Integer.parseInt(request.getParameter("pesquisa"));
             HistoricoJpaController daoHist = new HistoricoJpaController(ut, emf);
             List<Calendar> datas = new ArrayList();
             Integer anoatual = Calendar.getInstance().get(Calendar.YEAR);
+            
             for (int i = 2014; i <=anoatual ; i++) {
                 Calendar primeiroSemestre = Calendar.getInstance();
                 primeiroSemestre.clear();
@@ -222,11 +223,29 @@ public class Servlet extends HttpServlet {
                 //segundoSemestre.set(Calendar.MONTH, 6);
                 datas.add(segundoSemestre);
             }
-            for (Calendar data : datas) {
-                System.out.println(data.getTime());
-                
+            ArrayList<Date> datasE = new ArrayList<Date>();
+            Calendar Semestre1 = Calendar.getInstance();
+            Calendar Semestre2 = Calendar.getInstance();
+            for(int i = 0;  i < datas.size(); i++){
+                if(periodo==i){
+                    Semestre1 = datas.get(i);
+                    Semestre2 = datas.get(i+1);
+                    datasE.add(Semestre1.getTime());
+                    datasE.add(Semestre2.getTime());
+                    
+                }
             }
             
+            for (Calendar data : datas) {
+                System.out.println(data.getTime());
+                //System.out.println(datasE.get(0));
+                //System.out.println(datasE.get(1));
+                //System.out.println(Semestre2.getTime());
+            }
+            
+            List<Object[]> ol = daoHist.getHistoricoCount3(datasE.get(0), datasE.get(1));
+            //request.setAttribute("grupo", ol);
+            //request.getRequestDispatcher("/WEB-INF/listarPontos.jsp").forward(request, response);
             
             response.sendRedirect("listarPorPeriodo.html");
             //List<Object[]> ol = daoHist.getHistoricoCount3();

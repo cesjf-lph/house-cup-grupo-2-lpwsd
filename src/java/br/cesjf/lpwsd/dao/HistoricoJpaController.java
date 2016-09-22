@@ -9,6 +9,7 @@ import br.cesjf.lpwsd.dao.exceptions.NonexistentEntityException;
 import br.cesjf.lpwsd.dao.exceptions.RollbackFailureException;
 import classe.Historico;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -168,10 +169,12 @@ public class HistoricoJpaController implements Serializable {
         }
     }
 
-    public List<Object[]> getHistoricoCount3() {
+    public List<Object[]> getHistoricoCount3(Date i, Date f) {
         EntityManager em = getEntityManager();
         try {
-            Query q = em.createQuery("SELECT h.aluno.grupo, SUM(h.pontos) FROM Historico AS h GROUP BY h.aluno.grupo");
+            Query q = em.createQuery("SELECT h.aluno.grupo, SUM(h.pontos) FROM Historico AS h BETWEEN :dataI AND :dataF GROUP BY h.aluno.grupo ");
+            q.setParameter("dataI", i);
+            q.setParameter("dataF", f);
             return ((List<Object[]>) q.getResultList());
         } finally {
             em.close();
