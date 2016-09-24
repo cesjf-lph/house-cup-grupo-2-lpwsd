@@ -172,9 +172,9 @@ public class HistoricoJpaController implements Serializable {
     public List<Object[]> getHistoricoCount3(Date i, Date f) {
         EntityManager em = getEntityManager();
         try {
-            Query q = em.createQuery("SELECT h.aluno.grupo, SUM(h.pontos) FROM Historico AS h BETWEEN :dataI AND :dataF GROUP BY h.aluno.grupo ");
-            q.setParameter("dataI", i);
-            q.setParameter("dataF", f);
+            Query q = em.createQuery("SELECT h.aluno.grupo, SUM(h.pontos) FROM Historico AS h WHERE h.data BETWEEN ?1 AND ?2 GROUP BY h.aluno.grupo ");
+            q.setParameter(1, i);
+            q.setParameter(2, f);
             return ((List<Object[]>) q.getResultList());
         } finally {
             em.close();
