@@ -106,18 +106,25 @@ public class Servlet extends HttpServlet {
         else if(uri.contains("pesquisar.html")){
             List<Calendar> datas = new ArrayList();
             Integer anoatual = Calendar.getInstance().get(Calendar.YEAR);
+            ArrayList<Date> datasE = new ArrayList<Date>();
             
             for (int i = 2014; i <=anoatual ; i++) {
                 Calendar primeiroSemestre = Calendar.getInstance();
+                primeiroSemestre.get(Calendar.YEAR);
                 primeiroSemestre.clear();
                 primeiroSemestre.set(i, Calendar.JANUARY, 1);
                 datas.add(primeiroSemestre);
+                datasE.add(primeiroSemestre.getTime());
                 Calendar segundoSemestre = Calendar.getInstance();
                 segundoSemestre.set(i, Calendar.JULY, 1,0,0,0);
                 //segundoSemestre.set(Calendar.MONTH, 6);
+                datasE.add(segundoSemestre.getTime());
                 datas.add(segundoSemestre);
             }
-            request.setAttribute("datas", datas);
+            //datasE.get(1).getYear();
+            
+            request.setAttribute("anoAt", anoatual);
+            request.setAttribute("datas", datasE);
             request.getRequestDispatcher("/WEB-INF/pesquisarPeriodo.jsp").forward(request, response);
         }
         else if(uri.contains("listarPorPeriodo.html")){
