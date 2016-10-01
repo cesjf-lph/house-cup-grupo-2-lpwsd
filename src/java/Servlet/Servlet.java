@@ -9,6 +9,8 @@ import classe.Grupo;
 import classe.Historico;
 import classe.Professor;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -102,33 +104,32 @@ public class Servlet extends HttpServlet {
             }*/
             request.setAttribute("grupo", ol);
             request.getRequestDispatcher("/WEB-INF/listarPontos.jsp").forward(request, response);
-        }
-        else if(uri.contains("pesquisar.html")){
-            List<Calendar> datas = new ArrayList();
+        } else if (uri.contains("pesquisar.html")) {
+            List<String> datas = new ArrayList();
             Integer anoatual = Calendar.getInstance().get(Calendar.YEAR);
-            ArrayList<Date> datasE = new ArrayList<Date>();
-            
-            for (int i = 2014; i <=anoatual ; i++) {
-                Calendar primeiroSemestre = Calendar.getInstance();
-                primeiroSemestre.get(Calendar.YEAR);
-                primeiroSemestre.clear();
-                primeiroSemestre.set(i, Calendar.JANUARY, 1);
-                datas.add(primeiroSemestre);
-                datasE.add(primeiroSemestre.getTime());
-                Calendar segundoSemestre = Calendar.getInstance();
-                segundoSemestre.set(i, Calendar.JULY, 1,0,0,0);
-                //segundoSemestre.set(Calendar.MONTH, 6);
-                datasE.add(segundoSemestre.getTime());
-                datas.add(segundoSemestre);
+            ArrayList<String> datasE = new ArrayList<String>();
+
+            for (int i = 2014; i <= anoatual; i++) {
+//                Calendar primeiroSemestre = Calendar.getInstance();
+//                primeiroSemestre.get(Calendar.YEAR);
+//                primeiroSemestre.clear();
+//                primeiroSemestre.set(i, Calendar.JANUARY, 1);
+                datasE.add("01/01/" + i);
+                datasE.add("01/07/" + i);
+//                datasE.add(primeiroSemestre.getTime());
+//                Calendar segundoSemestre = Calendar.getInstance();
+//                segundoSemestre.set(i, Calendar.JULY, 1,0,0,0);
+//                //segundoSemestre.set(Calendar.MONTH, 6);
+//                datasE.add(segundoSemestre.getTime());
+//                datas.add(segundoSemestre);
             }
             //datasE.get(1).getYear();
-            
+
             request.setAttribute("anoAt", anoatual);
             request.setAttribute("datas", datasE);
             request.getRequestDispatcher("/WEB-INF/pesquisarPeriodo.jsp").forward(request, response);
-        }
-        else if(uri.contains("listarPorPeriodo.html")){
-            
+        } else if (uri.contains("listarPorPeriodo.html")) {
+
         }
 
     }
@@ -236,45 +237,65 @@ public class Servlet extends HttpServlet {
             HistoricoJpaController daoHist = new HistoricoJpaController(ut, emf);
             List<Calendar> datas = new ArrayList();
             Integer anoatual = Calendar.getInstance().get(Calendar.YEAR);
-            
-            for (int i = 2014; i <=anoatual ; i++) {
+
+            for (int i = 2014; i <= anoatual; i++) {
                 Calendar primeiroSemestre = Calendar.getInstance();
                 primeiroSemestre.clear();
                 primeiroSemestre.set(i, Calendar.JANUARY, 1);
                 datas.add(primeiroSemestre);
                 Calendar segundoSemestre = Calendar.getInstance();
-                segundoSemestre.set(i, Calendar.JULY, 1,0,0,0);
+                segundoSemestre.set(i, Calendar.JULY, 1, 0, 0, 0);
                 //segundoSemestre.set(Calendar.MONTH, 6);
                 datas.add(segundoSemestre);
             }
             ArrayList<Date> datasE = new ArrayList<Date>();
             //Calendar Semestre1 = Calendar.getInstance();
             //Calendar Semestre2 = Calendar.getInstance();
-            for(int i = 0;  i < datas.size()-1; i+=2){
-                
-                if(periodo==i){
+            for (int i = 0; i < datas.size() - 1; i += 2) {
+
+                if (periodo == i) {
                     //Semestre1 = datas.get(i);
                     //Semestre2 = datas.get(i+1);
                     datasE.add(datas.get(i).getTime());
-                    datasE.add(datas.get(i+1).getTime());
+                    datasE.add(datas.get(i + 1).getTime());
                     List<Object[]> ol = daoHist.getHistoricoCount3(datasE.get(0), datasE.get(1));
                     request.setAttribute("grupo", ol);
                 }
-              
+
             }
-            
+
             //for (Calendar data : datas) {
-                //System.out.println(data.getTime());
-                //System.out.println(datasE.get(0));
-                //System.out.println(datasE.get(1));
-                //System.out.println(Semestre2.getTime());
+            //System.out.println(data.getTime());
+            //System.out.println(datasE.get(0));
+            //System.out.println(datasE.get(1));
+            //System.out.println(Semestre2.getTime());
             //}
-            
-            
             request.getRequestDispatcher("/WEB-INF/listarPontos.jsp").forward(request, response);
-            
+
             //response.sendRedirect("listarPorPeriodo.html");
             //List<Object[]> ol = daoHist.getHistoricoCount3();
+        } else if (request.getRequestURI().contains("listarPorPeriodo.html")) {
+            String periodo = request.getParameter("periodos");
+            DateFormat df = DateFormat.getDateInstance();
+            System.out.println(periodo);
+            // DateFormat df = DateFormat.get;
+            try {
+                Date data = df.parse(periodo);
+                System.out.println(data);
+                Calendar c = Calendar.getInstance();
+                c.setTime(data);
+                c.add(Calendar.MONTH, 6);
+                Date finaldata = c.getTime();
+                System.out.println(finaldata);
+                HistoricoJpaController dao = new HistoricoJpaController(ut, emf);
+                List<Object[]> x = dao.getHistoricoCount3(data, finaldata);
+                request.setAttribute("grupo", x);
+                request.getRequestDispatcher("/WEB-INF/listarPontos.jsp").forward(request, response);
+                
+            } catch (ParseException ex) {
+                Logger.getLogger(Servlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
     }
 
